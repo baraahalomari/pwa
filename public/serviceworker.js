@@ -81,6 +81,10 @@ self.addEventListener("fetch", (event) => {
     );
   }
 
+  self.addEventListener("push", () => {
+    self.registration.sendNotification("test message",{});
+  });
+
   // If our if() condition is false, then this fetch handler won't intercept the
   // request. If there are any other fetch handlers registered, they will get a
   // chance to call event.respondWith(). If no fetch handlers call

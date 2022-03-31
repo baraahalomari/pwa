@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import { CircularProgress, Container, Box, Button, Paper, Typography, MobileStepper, CssBaseline } from '@mui/material';
@@ -18,7 +18,9 @@ function SwipeableTextMobileStepper() {
   const classes = useStyles();
   const navigate = useNavigate();
   const theme = useTheme();
-  const [activeStep, setActiveStep] = React.useState(0);
+
+  const [activeStep, setActiveStep] = useState(0);
+  const [subscribe, setSubscribe] = useState(false);
   const maxSteps = images.length;
 
   const handleNext = () => {
@@ -33,12 +35,22 @@ function SwipeableTextMobileStepper() {
     setActiveStep(step);
   };
 
+  const handleSubscribe =async () => {
+    let sw = await navigator.serviceWorker.ready;
+    let push = await sw.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: 'BAfU8GXv3Wm53JwxK1O6n6OIEUabm76khyx-LAo4L1EjaK4CLozIH5EDf6dppKUZ1T-8sh_MNpE3I1626Fs_umc'
+    });
+    console.log(push);
+
+  }
+
   return (
     <>
         <CssBaseline />
       {/* <Container component="main" maxWidth="sd"  > */}
         <Box className={classes.container} maxWidth="xs" xs={12}>
-         
+         {!subscribe && <Button className={classes.subscribe} variant="outlined" color="error" onClick={handleSubscribe} >SUBSUCRIBE</Button>}
           <Paper square elevation={0} >
             <Typography className={classes.label} >{images[activeStep].label}</Typography>
           </Paper>
