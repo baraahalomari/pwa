@@ -41,7 +41,7 @@ function SwipeableTextMobileStepper() {
       userVisibleOnly: true,
       applicationServerKey: 'BAfU8GXv3Wm53JwxK1O6n6OIEUabm76khyx-LAo4L1EjaK4CLozIH5EDf6dppKUZ1T-8sh_MNpE3I1626Fs_umc'
     });
-    console.log(push);
+    console.log(json.stringify(push));
 
   }
 

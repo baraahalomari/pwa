@@ -6,7 +6,7 @@ let vapidKeys= {
 }
 
 push.setVapidDetails('mailto:balomari@gmail.com', vapidKeys.publicKey, vapidKeys.privateKey)
-
+var payload = 'Here is a payload!';
 const subscription = {
   endpoint: 'https://fcm.googleapis.com/fcm/send/e_3U38Qav2E:AP…krAvy4kp6E5P2GcgKTX9JJQ6OPyBJG-TTOlXweIjxHqYPcAp0',
   expirationTime: null,

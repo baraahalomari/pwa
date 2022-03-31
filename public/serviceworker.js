@@ -82,19 +82,23 @@ self.addEventListener("fetch", (event) => {
   }
 
   self.addEventListener("push", (e) => {
-    var options = {
+    const options = {
       body: 'This notification was generated from a push!',
-      icon: 'images/logo.png',
+      icon: '/images/logo.png',
       vibrate: [100, 50, 100],
       data: {
         dateOfArrival: Date.now(),
         primaryKey: '2'
       },
       actions: [
-        {action: 'explore', title: 'Explore this new world',
-          icon: 'images/checkmark.png'},
-        {action: 'close', title: 'Close',
-          icon: 'images/xmark.png'},
+        {
+          action: 'explore', title: 'Explore this new world',
+          icon: '/images/logo.png'
+        },
+        {
+          action: 'close', title: 'Close',
+          icon: '/images/logo.png'
+        },
       ]
     };
     e.waitUntil(
