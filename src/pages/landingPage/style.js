@@ -48,8 +48,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     padding: '0.5rem',
     width: '50%',
-    
-
   },
   leftArrow: {
     display: 'flex',
@@ -62,6 +60,11 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'end',
     alignItems: 'center',
     margin: 'auto'
+  },
+  subscribe:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '50%',
   }
 }));
 
