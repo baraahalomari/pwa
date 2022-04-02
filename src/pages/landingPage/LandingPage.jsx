@@ -7,7 +7,7 @@ import SwipeableViews from 'react-swipeable-views';
 
 import useStyles from './style';
 import images from './data';
-
+import logo from './logo.png';
 
 function SwipeableTextMobileStepper() {
 
@@ -31,40 +31,33 @@ function SwipeableTextMobileStepper() {
     setActiveStep(step);
   };
 
-
-
   const handleSubscribe = () => {
-
-
-    // Let's check if the browser supports notifications
-
-    if (!("Notification" in window)) {
-      alert("This browser does not support desktop notification");
-
-      // Let's check whether notification permissions have already been granted
-    } else if (Notification.permission === "granted") {
+    Notification.requestPermission(function (result) {
+      console.log('Notification permission status:', result);
       if (subscribe) {
-        new Notification("You have subscribed to our newsletter");
-      } else {
-        new Notification("Welcome to our newsletter subscription");
+        navigator.serviceWorker.ready.then(function (registration) {
+          registration.showNotification('Newsletters App', {
+            body: 'you have already subscribed to our newsletters',
+            icon: logo,
+            vibrate: [200, 100, 200, 100, 200, 100, 200],
+            tag: 'Newsletters App'
+          })
+        });
+      } else if (result === 'granted') {
+        navigator.serviceWorker.ready.then(function (registration) {
+          registration.showNotification('Newsletters App', {
+            body: 'Well done! You will receive notifications',
+            icon: logo,
+            vibrate: [200, 100, 200, 100, 200, 100, 200],
+            tag: 'Newsletters App'
+          });
+        });
         setSubscribe(true);
       }
-      // If it's okay let's create a notification
-
-      // Otherwise, we need to ask the user for permission
-    } else if (Notification.permission !== "denied") {
-
-      Notification.requestPermission().then(function (permission) {
-        // If the user accepts, let's create a notification
-        if (permission === "granted") {
-           new Notification("Welcome to our newsletter subscription");
-          setSubscribe(true);
-        }
-      });
-    }
-
-
+    });
   }
+
+
 
   return (
     <>
@@ -78,7 +71,7 @@ function SwipeableTextMobileStepper() {
           {images.map((step, index) => (
             <div key={index}>
               {Math.abs(activeStep - index) <= 2 ? (
-                !step.imgPath ? <CircularProgress /> : <Box  component="img" className={classes.media} src={step.imgPath} alt={step.label} />) : <CircularProgress />}
+                !step.imgPath ? <CircularProgress /> : <Box component="img" className={classes.media} src={step.imgPath} alt={step.label} />) : <CircularProgress />}
             </div>
           ))}
         </SwipeableViews>
