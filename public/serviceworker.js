@@ -81,30 +81,7 @@ self.addEventListener("fetch", (event) => {
     );
   }
 
-  self.addEventListener("push", (e) => {
-    const options = {
-      body: 'This notification was generated from a push!',
-      icon: '/images/logo.png',
-      vibrate: [100, 50, 100],
-      data: {
-        dateOfArrival: Date.now(),
-        primaryKey: '2'
-      },
-      actions: [
-        {
-          action: 'explore', title: 'Explore this new world',
-          icon: '/images/logo.png'
-        },
-        {
-          action: 'close', title: 'Close',
-          icon: '/images/logo.png'
-        },
-      ]
-    };
-    e.waitUntil(
-      self.registration.showNotification('Hello world!', options)
-    );
-  });
+
 
   // If our if() condition is false, then this fetch handler won't intercept the
   // request. If there are any other fetch handlers registered, they will get a

@@ -22,12 +22,39 @@
   <div id="root"></div>
 
   <script>
+
+    const determineAppServerKey = () => {
+      const validBublicKey = 'BAfU8GXv3Wm53JwxK1O6n6OIEUabm76khyx-LAo4L1EjaK4CLozIH5EDf6dppKUZ1T-8sh_MNpE3I1626Fs_umc';
+      return urlBase64ToUint8Array(validBublicKey);
+    }
+
+    const urlBase64ToUint8Array = (base64String) => {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+      const rawData = window.atob(base64);
+      const outputArray = new Uint8Array(rawData.length);
+
+      for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
+    }
+
     window.addEventListener("load", () => {
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("./serviceworker.js")
           .then(registration => {
             console.log("SW registered: ", registration);
-            
+            return registration.pushManager.getSubscription()
+            .then((subscription)=>{
+              return registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: determineAppServerKey()
+              })
+            })
           })
           .catch(registrationError => {
             console.log("SW registration failed: ", registrationError);
