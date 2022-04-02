@@ -2,14 +2,12 @@
 import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles((theme) => ({
   container: {
-
-    height: '95vh',
-    width: '98vw',
+    height: '100vh',
+    width: '100vw',
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
-    marginLeft: '5vw',
-    marginRight: '5vw',
+    padding: '1rem',
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -19,9 +17,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 'auto',
-    padding: '1rem',
-    height: '50vh',
-    width: '80%',
+    paddingTop: '2rem',
+    paddingBottom: '3rem',
+    height: '60vh',
+    width: '90%',
     objectFit: 'cover',
     objectPosition: 'center',
     overflow: 'hidden',
@@ -32,14 +31,14 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: 'translate(-40%, -60%)',
+    transform: 'translate(-50%, -50%)',
     zIndex: 9,
     fontSize: '1rem',
     fontWeight: 900,
     backgroundColor: 'rgba(0,0,0,0.5)',
     borderRadius: '0.5rem',
     color: 'rgb(240, 247, 247)',
-    width: '33%',
+    width: '25%',
     padding: '0.5rem',
   },
   buttonStart: {
@@ -65,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     width: '50%',
+    padding: '0.5rem'
   }
 }));
 

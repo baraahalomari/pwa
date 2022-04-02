@@ -1,13 +1,9 @@
-import React,{ useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import { CircularProgress, Container, Box, Button, Paper, Typography, MobileStepper, CssBaseline } from '@mui/material';
+import { CircularProgress, Box, Button, Paper, Typography, MobileStepper, CssBaseline } from '@mui/material';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import SwipeableViews from 'react-swipeable-views';
-import { autoPlay } from 'react-swipeable-views-utils';
-
-// const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
 
 import useStyles from './style';
 import images from './data';
@@ -35,56 +31,79 @@ function SwipeableTextMobileStepper() {
     setActiveStep(step);
   };
 
-  const handleSubscribe =async () => {
-    let sw = await navigator.serviceWorker.ready;
-    let push = await sw.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: 'BAfU8GXv3Wm53JwxK1O6n6OIEUabm76khyx-LAo4L1EjaK4CLozIH5EDf6dppKUZ1T-8sh_MNpE3I1626Fs_umc'
-    });
-    console.log(JSON.stringify(push));
+
+
+  const handleSubscribe = () => {
+
+
+    // Let's check if the browser supports notifications
+
+    if (!("Notification" in window)) {
+      alert("This browser does not support desktop notification");
+
+      // Let's check whether notification permissions have already been granted
+    } else if (Notification.permission === "granted") {
+      if (subscribe) {
+        new Notification("You have subscribed to our newsletter");
+      } else {
+        new Notification("Welcome to our newsletter subscription");
+        setSubscribe(true);
+      }
+      // If it's okay let's create a notification
+
+      // Otherwise, we need to ask the user for permission
+    } else if (Notification.permission !== "denied") {
+
+      Notification.requestPermission().then(function (permission) {
+        // If the user accepts, let's create a notification
+        if (permission === "granted") {
+           new Notification("Welcome to our newsletter subscription");
+          setSubscribe(true);
+        }
+      });
+    }
+
 
   }
 
   return (
     <>
-        <CssBaseline />
-      {/* <Container component="main" maxWidth="sd"  > */}
-        <Box className={classes.container} maxWidth="xs" xs={12}>
-         {!subscribe && <Button className={classes.subscribe} variant="outlined" color="error" onClick={handleSubscribe} >SUBSUCRIBE</Button>}
-          <Paper square elevation={0} >
-            <Typography className={classes.label} >{images[activeStep].label}</Typography>
-          </Paper>
-          <SwipeableViews  axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}  index={activeStep}  onChangeIndex={handleStepChange}  enableMouseEvents >
-            {images.map((step, index) => (
-              < >
-                {Math.abs(activeStep - index) <= 2 ? (
-                  !step.imgPath ? <CircularProgress /> : <Box component="img" className={classes.media} src={step.imgPath} alt={step.label}  /> ) : <CircularProgress />}
-              </>
-            ))}
-          </SwipeableViews>
-          <MobileStepper  steps={maxSteps} position="static" activeStep={activeStep}
-            nextButton={
-              <Button  size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}  >
-                {theme.direction === 'rtl' ? (
-                  <KeyboardArrowLeft className={classes.rightArrow} />
-                ) : (
-                  <KeyboardArrowRight className={classes.leftArrow} />
-                )}
-              </Button>
-            }
-            backButton={
-              <Button size="small" onClick={handleBack} disabled={activeStep === 0} sx={{ display: 'flex' }}>
-                {theme.direction === 'rtl' ? (
-                  <KeyboardArrowRight className={classes.rightArrow} />
-                ) : (
-                  <KeyboardArrowLeft className={classes.leftArrow} />
-                )}
-              </Button>
-            }
-          />
-          <Button className={classes.buttonStart} type="submit"  onClick={() => navigate('/auth')}  variant="contained">Get Started </Button>
-        </Box>
-      {/* </Container> */}
+      <CssBaseline />
+      <Box className={classes.container} maxWidth="xs" xs={12}>
+        <Button className={classes.subscribe} variant="outlined" color={!subscribe ? "error" : "success"} onClick={handleSubscribe} >{!subscribe ? 'SUBSUCRIBE' : 'SUBSUCRIBED'}</Button>
+        <Paper square elevation={0} >
+          <Typography className={classes.label} >{images[activeStep].label}</Typography>
+        </Paper>
+        <SwipeableViews axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'} index={activeStep} onChangeIndex={handleStepChange} enableMouseEvents >
+          {images.map((step, index) => (
+            <div key={index}>
+              {Math.abs(activeStep - index) <= 2 ? (
+                !step.imgPath ? <CircularProgress /> : <Box  component="img" className={classes.media} src={step.imgPath} alt={step.label} />) : <CircularProgress />}
+            </div>
+          ))}
+        </SwipeableViews>
+        <MobileStepper steps={maxSteps} position="static" activeStep={activeStep}
+          nextButton={
+            <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}  >
+              {theme.direction === 'rtl' ? (
+                <KeyboardArrowLeft className={classes.rightArrow} />
+              ) : (
+                <KeyboardArrowRight className={classes.leftArrow} />
+              )}
+            </Button>
+          }
+          backButton={
+            <Button size="small" onClick={handleBack} disabled={activeStep === 0} sx={{ display: 'flex' }}>
+              {theme.direction === 'rtl' ? (
+                <KeyboardArrowRight className={classes.rightArrow} />
+              ) : (
+                <KeyboardArrowLeft className={classes.leftArrow} />
+              )}
+            </Button>
+          }
+        />
+        <Button className={classes.buttonStart} type="submit" onClick={() => navigate('/auth')} variant="contained">Get Started </Button>
+      </Box>
     </>
   );
 }
